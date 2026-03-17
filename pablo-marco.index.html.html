@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pablo Marcó</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Epilogue:ital,wght@0,200;0,300;0,400;0,700;1,200;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0a0a0a;
+  --white:#f4f2ee;
+  --gray:#1c1c1c;
+  --gray2:#2e2e2e;
+  --mid:#6b6560;
+  --accent:#d4a84b;
+  --accent2:#e8c97a;
+  --font-h:'Bebas Neue',sans-serif;
+  --font-b:'Epilogue',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--black);
+  color:var(--white);
+  font-family:var(--font-b);
+  font-weight:300;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* CURSOR */
+.cursor{
+  position:fixed;width:10px;height:10px;
+  background:var(--accent);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform 0.08s,width 0.2s,height 0.2s,background 0.2s;
+}
+.cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border:1px solid rgba(212,168,75,0.5);
+  border-radius:50%;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform 0.18s ease,width 0.3s,height 0.3s,opacity 0.3s;
+}
+body:hover .cursor{opacity:1}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.4rem 3rem;
+  mix-blend-mode:normal;
+}
+.nav-logo{
+  font-family:var(--font-h);
+  font-size:1.3rem;letter-spacing:0.08em;
+  color:var(--white);text-decoration:none;
+}
+.nav-logo span{color:var(--accent)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{
+  font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(244,242,238,0.55);text-decoration:none;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--accent)}
+.nav-cta{
+  font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;
+  border:1px solid rgba(212,168,75,0.6);color:var(--accent);
+  padding:0.5rem 1.4rem;text-decoration:none;
+  transition:all 0.2s;
+}
+.nav-cta:hover{background:var(--accent);color:var(--black)}
+
+/* HERO — full screen */
+#hero{
+  height:100vh;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 3rem 4.5rem;
+  position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 75% 40%, rgba(212,168,75,0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 80% at 20% 80%, rgba(212,168,75,0.04) 0%, transparent 50%),
+    var(--black);
+}
+.hero-grid-lines{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(244,242,238,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(244,242,238,0.03) 1px, transparent 1px);
+  background-size:80px 80px;
+  pointer-events:none;
+}
+.hero-number{
+  position:absolute;top:50%;right:3rem;
+  transform:translateY(-50%);
+  font-family:var(--font-h);
+  font-size:clamp(180px,22vw,340px);
+  color:rgba(244,242,238,0.03);
+  line-height:1;letter-spacing:-0.02em;
+  pointer-events:none;
+  user-select:none;
+}
+.hero-tag{
+  font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:1rem;
+}
+.hero-tag::before{content:'';width:32px;height:1px;background:var(--accent)}
+.hero-title{
+  font-family:var(--font-h);
+  font-size:clamp(72px,11vw,160px);
+  line-height:0.92;
+  letter-spacing:-0.01em;
+  color:var(--white);
+  position:relative;z-index:1;
+  margin-bottom:2.5rem;
+}
+.hero-title .accent{color:var(--accent)}
+.hero-bottom{
+  display:flex;align-items:flex-end;
+  justify-content:space-between;
+  position:relative;z-index:1;
+}
+.hero-desc{
+  max-width:420px;
+  font-size:0.95rem;
+  line-height:1.8;
+  color:rgba(244,242,238,0.55);
+  font-weight:300;
+}
+.hero-ctas{
+  display:flex;flex-direction:column;align-items:flex-end;gap:0.8rem;
+}
+.btn-big{
+  font-family:var(--font-h);
+  font-size:1.05rem;letter-spacing:0.1em;
+  background:var(--accent);color:var(--black);
+  padding:0.85rem 2.4rem;
+  text-decoration:none;
+  transition:background 0.2s,transform 0.15s;
+  display:inline-block;
+}
+.btn-big:hover{background:var(--accent2);transform:translateY(-2px)}
+.btn-ghost{
+  font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(244,242,238,0.45);text-decoration:none;
+  transition:color 0.2s;
+}
+.btn-ghost:hover{color:var(--white)}
+.hero-scroll{
+  position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+  font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:rgba(244,242,238,0.3);
+  animation:bounce 2s infinite;
+}
+.hero-scroll-arrow{
+  width:1px;height:40px;background:rgba(244,242,238,0.2);
+}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+
+/* MARQUEE */
+.marquee-wrap{
+  background:var(--accent);
+  padding:1rem 0;
+  overflow:hidden;
+  white-space:nowrap;
+}
+.marquee-track{
+  display:inline-flex;gap:0;
+  animation:marquee 18s linear infinite;
+}
+.marquee-item{
+  font-family:var(--font-h);
+  font-size:1.1rem;letter-spacing:0.12em;
+  color:var(--black);
+  padding:0 2.5rem;
+}
+.marquee-sep{color:rgba(0,0,0,0.3);padding:0 0.5rem}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SOBRE */
+#sobre{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  position:relative;
+}
+.sobre-left{
+  background:var(--gray);
+  padding:7rem 4rem;
+  display:flex;flex-direction:column;justify-content:center;
+  position:sticky;top:0;height:100vh;
+}
+.sobre-eyebrow{
+  font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.5rem;
+}
+.sobre-heading{
+  font-family:var(--font-h);
+  font-size:clamp(48px,5.5vw,80px);
+  line-height:1;letter-spacing:0.02em;
+  color:var(--white);margin-bottom:2rem;
+}
+.sobre-heading em{
+  font-style:italic;
+  font-family:var(--font-b);
+  font-size:0.55em;
+  font-weight:200;
+  color:rgba(244,242,238,0.45);
+  display:block;
+  letter-spacing:0.05em;
+  margin-bottom:0.3rem;
+}
+.sobre-stat-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1.5rem;margin-top:3rem;
+}
+.s-stat{
+  border-top:1px solid rgba(244,242,238,0.12);
+  padding-top:1rem;
+}
+.s-stat-num{
+  font-family:var(--font-h);
+  font-size:2.8rem;color:var(--accent);line-height:1;
+}
+.s-stat-label{
+  font-size:0.75rem;color:rgba(244,242,238,0.45);
+  line-height:1.4;margin-top:0.4rem;
+  letter-spacing:0.05em;
+}
+
+.sobre-right{
+  padding:7rem 4rem;
+  display:flex;flex-direction:column;justify-content:center;
+  background:var(--black);
+}
+.sobre-text p{
+  font-size:1.05rem;line-height:1.9;
+  color:rgba(244,242,238,0.7);
+  margin-bottom:1.5rem;
+  font-weight:300;
+}
+.sobre-text p strong{
+  color:var(--white);font-weight:400;
+}
+.formacion-block{
+  margin-top:3rem;
+  padding-top:2rem;
+  border-top:1px solid rgba(244,242,238,0.08);
+}
+.formacion-title{
+  font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.5rem;
+}
+.f-item{
+  display:flex;gap:1rem;align-items:flex-start;
+  margin-bottom:1.2rem;
+}
+.f-num{
+  font-family:var(--font-h);font-size:1rem;
+  color:rgba(244,242,238,0.2);min-width:24px;
+}
+.f-body{}
+.f-degree{font-size:0.9rem;font-weight:400;color:var(--white)}
+.f-inst{font-size:0.78rem;color:rgba(244,242,238,0.4);margin-top:0.1rem}
+
+/* SERVICIOS */
+#servicios{
+  background:var(--white);
+  color:var(--black);
+  padding:8rem 3rem;
+}
+.servicios-top{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:5rem;
+}
+.servicios-heading{
+  font-family:var(--font-h);
+  font-size:clamp(48px,7vw,100px);
+  line-height:0.95;letter-spacing:0.01em;
+  color:var(--black);
+  max-width:600px;
+}
+.servicios-heading span{color:var(--accent)}
+.servicios-sub{
+  max-width:280px;
+  font-size:0.88rem;line-height:1.75;
+  color:rgba(10,10,10,0.55);
+  text-align:right;
+}
+.servicios-list{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-top:1px solid rgba(10,10,10,0.12);
+}
+.s-card{
+  padding:2.5rem 2rem;
+  border-right:1px solid rgba(10,10,10,0.12);
+  transition:background 0.25s;
+  position:relative;overflow:hidden;
+}
+.s-card:last-child{border-right:none}
+.s-card::after{
+  content:'';
+  position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:var(--accent);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 0.3s;
+}
+.s-card:hover{background:rgba(10,10,10,0.03)}
+.s-card:hover::after{transform:scaleX(1)}
+.s-n{
+  font-family:var(--font-h);font-size:0.85rem;
+  color:rgba(10,10,10,0.25);letter-spacing:0.1em;
+  margin-bottom:1.5rem;
+}
+.s-title{
+  font-family:var(--font-h);
+  font-size:1.9rem;line-height:1.05;
+  color:var(--black);margin-bottom:1rem;
+}
+.s-desc{
+  font-size:0.85rem;line-height:1.8;
+  color:rgba(10,10,10,0.6);
+}
+
+/* LINKEDIN */
+#linkedin{
+  background:var(--gray);
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:8rem 3rem;
+  position:relative;overflow:hidden;
+}
+.linkedin-bg-text{
+  position:absolute;
+  bottom:-2rem;right:-1rem;
+  font-family:var(--font-h);
+  font-size:clamp(100px,16vw,220px);
+  color:rgba(244,242,238,0.03);
+  line-height:1;pointer-events:none;
+  user-select:none;
+}
+.linkedin-inner{
+  max-width:var(--max, 1100px);
+  width:100%;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:6rem;align-items:center;
+  position:relative;z-index:1;
+}
+.li-left .sec-eyebrow{
+  font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.5rem;
+}
+.li-heading{
+  font-family:var(--font-h);
+  font-size:clamp(44px,5vw,72px);
+  line-height:1;letter-spacing:0.02em;
+  color:var(--white);margin-bottom:1.8rem;
+}
+.li-text{
+  font-size:0.95rem;line-height:1.85;
+  color:rgba(244,242,238,0.55);margin-bottom:2.5rem;
+}
+.li-btn{
+  display:inline-flex;align-items:center;gap:0.8rem;
+  background:#0077b5;color:#fff;
+  padding:0.8rem 2rem;text-decoration:none;
+  font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;
+  font-weight:500;
+  transition:background 0.2s,transform 0.15s;
+}
+.li-btn:hover{background:#005f8e;transform:translateY(-2px)}
+.li-btn svg{width:18px;height:18px;fill:#fff;flex-shrink:0}
+.li-card{
+  background:rgba(244,242,238,0.04);
+  border:1px solid rgba(244,242,238,0.08);
+  padding:2.5rem;
+}
+.li-card-header{
+  display:flex;align-items:center;gap:1rem;
+  margin-bottom:1.5rem;padding-bottom:1.5rem;
+  border-bottom:1px solid rgba(244,242,238,0.08);
+}
+.li-avatar{
+  width:50px;height:50px;border-radius:50%;
+  background:rgba(212,168,75,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-h);font-size:1.2rem;
+  color:var(--accent);flex-shrink:0;
+}
+.li-card-name{font-size:0.9rem;font-weight:400;color:var(--white)}
+.li-card-role{font-size:0.75rem;color:rgba(244,242,238,0.4);margin-top:0.2rem}
+.li-card-body{
+  font-size:0.85rem;line-height:1.8;
+  color:rgba(244,242,238,0.55);font-style:italic;
+}
+.li-card-meta{
+  margin-top:1.5rem;padding-top:1.5rem;
+  border-top:1px solid rgba(244,242,238,0.06);
+  font-size:0.72rem;color:rgba(244,242,238,0.25);
+  letter-spacing:0.1em;text-transform:uppercase;
+}
+
+/* CONTACTO */
+#contacto{
+  background:var(--black);
+  padding:0;
+}
+.contacto-hero{
+  height:60vh;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  position:relative;overflow:hidden;
+  padding:4rem 3rem;
+}
+.contacto-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 80% at 50% 50%, rgba(212,168,75,0.07) 0%, transparent 65%);
+}
+.contacto-heading{
+  font-family:var(--font-h);
+  font-size:clamp(52px,10vw,140px);
+  line-height:0.9;
+  letter-spacing:0.01em;
+  color:var(--white);
+  position:relative;z-index:1;
+}
+.contacto-heading span{color:var(--accent)}
+.contacto-sub{
+  font-size:1rem;color:rgba(244,242,238,0.45);
+  margin-top:1.5rem;max-width:420px;
+  line-height:1.75;
+  position:relative;z-index:1;
+}
+
+.contacto-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-top:1px solid rgba(244,242,238,0.08);
+}
+.c-block{
+  padding:3rem 2.5rem;
+  border-right:1px solid rgba(244,242,238,0.08);
+  transition:background 0.2s;
+}
+.c-block:last-child{border-right:none}
+.c-block:hover{background:rgba(244,242,238,0.02)}
+.c-label{
+  font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1rem;
+}
+.c-value{
+  font-size:1rem;color:var(--white);
+  font-weight:300;line-height:1.5;
+  text-decoration:none;display:block;
+  transition:color 0.2s;
+}
+a.c-value:hover{color:var(--accent)}
+.c-action{
+  display:inline-block;
+  margin-top:1.2rem;
+  font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(244,242,238,0.3);text-decoration:none;
+  border-bottom:1px solid rgba(244,242,238,0.1);
+  padding-bottom:0.2rem;
+  transition:color 0.2s,border-color 0.2s;
+}
+.c-action:hover{color:var(--accent);border-color:var(--accent)}
+
+/* FOOTER */
+footer{
+  background:rgba(0,0,0,0.6);
+  border-top:1px solid rgba(244,242,238,0.05);
+  padding:1.8rem 3rem;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.f-logo{
+  font-family:var(--font-h);font-size:1rem;
+  color:rgba(244,242,238,0.25);text-decoration:none;
+}
+.f-copy{
+  font-size:0.72rem;color:rgba(244,242,238,0.2);
+  letter-spacing:0.08em;
+}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.8s ease,transform 0.8s ease}
+.reveal.on{opacity:1;transform:none}
+.reveal.d1{transition-delay:0.1s}
+.reveal.d2{transition-delay:0.2s}
+.reveal.d3{transition-delay:0.3s}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{display:none}
+  #hero{padding:0 1.5rem 3.5rem}
+  .hero-bottom{flex-direction:column;align-items:flex-start;gap:2rem}
+  .hero-ctas{align-items:flex-start}
+  #sobre{grid-template-columns:1fr;min-height:auto}
+  .sobre-left{position:relative;height:auto;padding:5rem 1.5rem 3rem}
+  .sobre-right{padding:3rem 1.5rem 5rem}
+  #servicios{padding:5rem 1.5rem}
+  .servicios-top{flex-direction:column;align-items:flex-start;gap:1.5rem}
+  .servicios-sub{text-align:left;max-width:100%}
+  .servicios-list{grid-template-columns:1fr;border:none}
+  .s-card{border-right:none;border-bottom:1px solid rgba(10,10,10,0.12);padding:2rem 0}
+  .linkedin-inner{grid-template-columns:1fr;gap:3rem}
+  #linkedin{padding:5rem 1.5rem}
+  .contacto-grid{grid-template-columns:1fr}
+  .c-block{border-right:none;border-bottom:1px solid rgba(244,242,238,0.08)}
+  footer{flex-direction:column;gap:0.5rem;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">PABLO <span>MARCÓ</span></a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre mí</a></li>
+    <li><a href="#servicios">Qué hago</a></li>
+    <li><a href="#linkedin">Ideas</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="#contacto" class="nav-cta">Hablemos</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-number">20</div>
+
+  <div class="hero-tag">Public Affairs &amp; Comunicación Estratégica</div>
+
+  <h1 class="hero-title">
+    PABLO<br>
+    MAR<span class="accent">CÓ</span>
+  </h1>
+
+  <div class="hero-bottom">
+    <p class="hero-desc">
+      Ayudo a las organizaciones a crecer desde su costado más intangible.
+      Más de 20 años potenciando empresas a través de la comunicación
+      y la gestión de asuntos públicos.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contacto" class="btn-big">HABLEMOS</a>
+      <a href="#sobre" class="btn-ghost">Conocer más ↓</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span class="hero-scroll-arrow"></span>
+    Scroll
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Public Affairs<span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Comunicación Estratégica<span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Gestión Reputacional<span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Asuntos Públicos<span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Relaciones Institucionales<span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Estrategia Corporativa<span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Public Affairs<span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Comunicación Estratégica<span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Gestión Reputacional<span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Asuntos Públicos<span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Relaciones Institucionales<span class="marquee-sep">·</span></span>
+    <span class="marquee-item">Estrategia Corporativa<span class="marquee-sep">·</span></span>
+  </div>
+</div>
+
+<!-- SOBRE MÍ -->
+<section id="sobre">
+  <div class="sobre-left reveal">
+    <p class="sobre-eyebrow">Sobre mí</p>
+    <h2 class="sobre-heading">
+      <em>20 años</em>
+      HACIENDO<br>LO QUE<br>IMPORTA
+    </h2>
+    <div class="sobre-stat-grid">
+      <div class="s-stat">
+        <div class="s-stat-num">20+</div>
+        <div class="s-stat-label">Años de experiencia en comunicación y asuntos públicos</div>
+      </div>
+      <div class="s-stat">
+        <div class="s-stat-num">∞</div>
+        <div class="s-stat-label">Industrias y tamaños de organización acompañados</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sobre-right reveal d1">
+    <div class="sobre-text">
+      <p>
+        Siempre creí que <strong>lo intangible es el activo más poderoso de una organización</strong>.
+        La reputación, los vínculos, la capacidad de influir en el entorno:
+        esos son los recursos que marcan la diferencia real entre crecer o estancarse.
+      </p>
+      <p>
+        A lo largo de más de dos décadas trabajé junto a empresas de distintos sectores
+        ayudándolas a <strong>gestionar su comunicación y sus asuntos públicos con criterio estratégico</strong>.
+        Desde la construcción de mensajes hasta la relación con actores clave del entorno
+        político, regulatorio y social.
+      </p>
+      <p>
+        Mi convicción es clara: la comunicación profesional y la gestión de intereses
+        <strong>no son exclusividad de las grandes corporaciones</strong>.
+        Son herramientas al alcance de cualquier organización que quiera potenciarse.
+      </p>
+    </div>
+
+    <div class="formacion-block">
+      <p class="formacion-title">Formación académica</p>
+      <div class="f-item">
+        <span class="f-num">01</span>
+        <div class="f-body">
+          <p class="f-degree">Comunicación Social</p>
+          <p class="f-inst">Universidad Austral</p>
+        </div>
+      </div>
+      <div class="f-item">
+        <span class="f-num">02</span>
+        <div class="f-body">
+          <p class="f-degree">Posgrado en Gestión de la Comunicación en las Organizaciones</p>
+          <p class="f-inst">Universidad Austral</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUÉ HAGO -->
+<section id="servicios">
+  <div class="servicios-top reveal">
+    <h2 class="servicios-heading">QUÉ<br>HAGO<span>.</span></h2>
+    <p class="servicios-sub">
+      Tres pilares que funcionan solos o en conjunto, según lo que tu organización necesite.
+    </p>
+  </div>
+  <div class="servicios-list">
+    <div class="s-card reveal">
+      <p class="s-n">01</p>
+      <h3 class="s-title">PUBLIC<br>AFFAIRS</h3>
+      <p class="s-desc">
+        Gestión de la relación con actores del entorno político, regulatorio y social.
+        Mapeo de stakeholders, estrategias de incidencia y representación ante
+        organismos públicos y privados.
+      </p>
+    </div>
+    <div class="s-card reveal d1">
+      <p class="s-n">02</p>
+      <h3 class="s-title">COMUNICACIÓN<br>ESTRATÉGICA</h3>
+      <p class="s-desc">
+        Desarrollo de mensajes, narrativas y planes alineados con los objetivos
+        de la organización. Comunicación interna, institucional y de crisis.
+      </p>
+    </div>
+    <div class="s-card reveal d2">
+      <p class="s-n">03</p>
+      <h3 class="s-title">GESTIÓN<br>REPUTACIONAL</h3>
+      <p class="s-desc">
+        Construcción y cuidado del capital reputacional. Relacionamiento con
+        medios, vocería ejecutiva y posicionamiento en la agenda pública y sectorial.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- LINKEDIN -->
+<section id="linkedin">
+  <div class="linkedin-bg-text">IDEAS</div>
+  <div class="linkedin-inner">
+    <div class="li-left reveal">
+      <p class="sec-eyebrow">LinkedIn &amp; Contenido</p>
+      <h2 class="li-heading">IDEAS<br>QUE<br>SUMAN.</h2>
+      <p class="li-text">
+        En LinkedIn comparto reflexiones sobre comunicación, asuntos públicos,
+        reputación y el rol de lo intangible en las organizaciones. Contenido
+        propio, con perspectiva práctica y ganas de aportar al debate profesional.
+      </p>
+      <a href="https://www.linkedin.com/in/pablo-marc%C3%B3-aba4995/" target="_blank" rel="noopener" class="li-btn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+        Ver perfil en LinkedIn
+      </a>
+    </div>
+    <div class="li-card reveal d1">
+      <div class="li-card-header">
+        <div class="li-avatar">PM</div>
+        <div>
+          <p class="li-card-name">Pablo Marcó</p>
+          <p class="li-card-role">Public Affairs &amp; Comunicación Estratégica</p>
+        </div>
+      </div>
+      <p class="li-card-body">
+        "La comunicación y los asuntos públicos son herramientas que potencian
+        el día a día de cualquier organización, sin importar su tamaño o industria.
+        No hay activo más valioso que saber gestionar lo intangible."
+      </p>
+      <p class="li-card-meta">→ Seguime en LinkedIn para más contenido</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="contacto-hero">
+    <div class="contacto-bg"></div>
+    <div style="position:relative;z-index:1;text-align:center">
+      <h2 class="contacto-heading">HABLE<span>MOS</span><br>HOY.</h2>
+      <p class="contacto-sub" style="margin:1.5rem auto 0">
+        Si querés potenciar tu organización desde la comunicación y los asuntos públicos,
+        estoy a disposición.
+      </p>
+    </div>
+  </div>
+  <div class="contacto-grid">
+    <div class="c-block reveal">
+      <p class="c-label">Celular / WhatsApp</p>
+      <a href="tel:+541164524541" class="c-value">+54 11 6452-4541</a>
+      <a href="https://wa.me/541164524541" target="_blank" rel="noopener" class="c-action">Escribir por WhatsApp →</a>
+    </div>
+    <div class="c-block reveal d1">
+      <p class="c-label">LinkedIn</p>
+      <a href="https://www.linkedin.com/in/pablo-marc%C3%B3-aba4995/" target="_blank" rel="noopener" class="c-value">Pablo Marcó</a>
+      <a href="https://www.linkedin.com/in/pablo-marc%C3%B3-aba4995/" target="_blank" rel="noopener" class="c-action">Ver perfil →</a>
+    </div>
+    <div class="c-block reveal d2">
+      <p class="c-label">Basado en</p>
+      <span class="c-value">Buenos Aires, Argentina</span>
+      <span class="c-action" style="border:none;cursor:default">Disponible para proyectos regionales</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#hero" class="f-logo">PABLO MARCÓ</a>
+  <p class="f-copy">© 2025 · Public Affairs &amp; Comunicación Estratégica</p>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=mx+'px';cursor.style.top=my+'px';
+});
+function animRing(){
+  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+document.querySelectorAll('a,button,.s-card,.c-block').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    cursor.style.transform='translate(-50%,-50%) scale(2.5)';
+    cursor.style.background='rgba(212,168,75,0.4)';
+    ring.style.width='60px';ring.style.height='60px';
+  });
+  el.addEventListener('mouseleave',()=>{
+    cursor.style.transform='translate(-50%,-50%) scale(1)';
+    cursor.style.background='var(--accent)';
+    ring.style.width='36px';ring.style.height='36px';
+  });
+});
+
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  nav.style.background = window.scrollY>50
+    ? 'rgba(10,10,10,0.95)'
+    : 'transparent';
+});
+
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on')}});
+},{threshold:0.12});
+reveals.forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
